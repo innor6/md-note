@@ -254,7 +254,7 @@ Control classes:
 - Aggregation  ◇---------
 - Inheritance  ◁---------
 
-![Relationships_association](C:\Users\64589\OneDrive\文档\Tepora\USTC\software architecture\pic\Relationships_association.png)
+![Relationships_association](C:\Users\64589\OneDrive\文档\Tepora\USTC\software architecture\pic\Relationships_association.png) 
 
 ##### Class Diagram
 
