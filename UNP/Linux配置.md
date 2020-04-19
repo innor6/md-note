@@ -12,7 +12,7 @@ vim:
 
 进入输入模式：i（esc退出）
 
-## 添加超级用户权限
+# 添加超级用户权限
 
 给普通用户赋予`sudo`权限。
 
@@ -25,7 +25,7 @@ vim:
 2. 修改/etc/sudoers文件权限（可用`ls -l`查看权限）
 
    ```
-   $ chmod 777 /etc/suders
+   $ chmod 777 /etc/sudoers
    ```
 
 3. 用`vi`编辑/etc/sudoers文件
@@ -46,6 +46,102 @@ vim:
    $ chmod 440 /etc/suders
    $ exit
    ```
+
+# 更新源
+
+```
+$ sudo vim /etc/apt/sources.list
+```
+
+添加
+
+```
+deb http://mirrors.ustc.edu.cn/debian/ buster mian
+deb-src http://mirrors.ustc.edu.cn/debian/ buster mian
+```
+
+
+
+# 添加字体
+
+1. 下载字体tff文件
+2. 在`/usr/share/fonts`下新建custom目录
+3. 修改权限`chmod 755 custom`
+4. 把tff文件放入文件夹中
+5. `sudo fc-cache -f -v`完成
+
+
+
+# 软件包安装
+
+##### net-tools
+
+（netstat, arp, ifconfig, netstat, rarp, nameif, route）
+
+```
+apt-get install net-tools
+```
+
+##### go
+
+- 下载
+
+  ```
+  wget https://dl.google.com/go/go1.14.1.linux-amd64.tar.gz
+  ```
+
+- 校验（2f49e...）
+
+  ```
+  sha256sum go1.14.1.linux-amd64.tar.gz
+  ```
+
+- 解压到`/usr/local`
+
+  ```
+  sudo tar -xzvf go1.14.1.linux-amd64.tar.gz -C /usr/local
+  ```
+
+- 设置环境变量
+
+  ```
+  sudo vim /etc/profile
+  ```
+
+  末尾添加
+
+  ```
+  export GOROOT=/usr/local/go
+  export GOPATH=$HOME/go
+  export PATH=$PATH:$GOROOT/bin:$GOPATH/bin
+  ```
+
+  在当前终端应用（完全应用需要重新登录）
+
+  ```
+  source /etc/profile
+  ```
+
+- 查看版本号，以测试安装成功
+
+  ```
+  go version
+  ```
+
+  
+  
+- 创建工作空间，如下：（好像不用）
+
+  ```
+  go/
+  	bin/	# 可执行命令
+  	pkg/	# 包对象
+  	src/	# 源码
+  ```
+
+  
+
+
 
 ## c/c++编译
 
@@ -93,14 +189,6 @@ vim:
    ```
 
 
-
-## 软件包安装
-
-net-tools（netstat, arp, ifconfig, netstat, rarp, nameif, route）
-
-```
-apt-get install net-tools
-```
 
 
 

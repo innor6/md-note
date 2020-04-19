@@ -1,6 +1,70 @@
-##### 微信小程序配置
+# 常用
+
+##### toast
+
+```
+uni.showToast({
+    title: '标题',
+    icon: none	//不设置该属性则为√的图标
+	duration: 1500 //ms，默认值
+});
+
+uni.showLoading({title: '加载中',});	//onLoad开头使用
+uni.hideLoading();	//onLoad中request返回success时
+uni.showToast({title: '连接服务器失败',icon: 'none'})	//fail时
+```
+
+
+
+##### 跳转
+
+```
+uni.navigateTo
+uni.redirectTo
+uni.reLaunch
+uni.switchTab
+uni.navigateBack
+```
+
+https://uniapp.dcloud.io/api/router?id=navigateto
+
+
+
+##### 数据缓存
+
+https://uniapp.dcloud.io/api/storage/storage?id=setstorage
+
+设置失效时间：
+
+https://www.csweigou.com/article/2143.html
+
+
+
+##### 定时器
+
+```
+setTimeout(callback, delay, rest)
+```
+
+dealy为毫秒，rest为可选的传给回调函数的参数。
+
+使用场景：数据提交成功后，显示toast，然后1000ms后触发页面跳转
+
+
+
+# 配置
+
+##### 小程序id配置
 
 打开工程中的manifest.json文件，选择微信小程序配置，输入小程序id即可。
+
+##### 服务器域名
+
+微信公众平台——开发——开发设置——服务器域名（域名写到/以前就可以）
+
+##### 获取用户唯一标识openid
+
+https://blog.csdn.net/qq_34328404/article/details/80624577
 
 ##### 导入样式组件库
 
@@ -17,6 +81,16 @@ pages.json中“condition”配置多个路径，保存后，ctrl+R可以选择�
 在pages.json中的"tabBar"中设置；
 
 图标可以去iconfont网站下载，下两种颜色#333333、选中颜色，大小80，png。图标放到static/tabbar文件夹下。
+
+##### 顶部导航标题
+
+在 `pages.json` 中的每个 `page` 的 `style` 属性，添加：
+
+`"navigationBarTitleText": "标题"`
+
+
+
+# 组件样式
 
 ##### view
 
@@ -43,7 +117,7 @@ id="..."
 
 [CSS选择器](https://www.runoob.com/cssref/css-selectors.html)
 
-##### Flex布局
+##### Flex
 
 [A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
 
@@ -59,17 +133,21 @@ align-items: center;
 
 .parent {
 display: flex;
+    
 /*主轴方向*/
 flex-direction: row | row-reverse | column | column-reverse;
 /*如何换行*/
 flex-wrap: nowrap | wrap | wrap-reverse;
+
 /*主轴对齐方式*/
 justify-content: flex-start | flex-end | center | space-between | space-around;
+    
 /*cross轴对齐方式*/
 align-items: flex-start | flex-end | center | baseline | stretch;
 /*cross轴对齐方式*/
 align-content: flex-start | flex-end | center | space-between | space-around | stretch;
 }
+
 
 .sub {
     flex: i; /*[推荐]这个item占i份的空间（自动缩放）*/

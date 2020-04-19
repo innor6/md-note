@@ -78,8 +78,7 @@ ctrl+T
 ```
 换行 \\
 空格 `\ `
-大括号 \{ \}
-省略号 \cdots \vdots \ddots
+
 ```
 
 ##### 集合
@@ -113,4 +112,157 @@ aT(n/b)+D(n)+C(n) & & {其他}
 $$
 
 [常用符号](http://www.mohu.org/info/symbols/symbols.htm)
+
+
+
+# LATEX-math
+
+行间：`$...$`
+
+独立：`$$...$$` 或 `\[...\]`
+
+
+
+换行：`\\`
+
+空格：`\`+空格
+
+间距：`\quad`	1 em间距
+
+对齐：`&`
+
+
+
+##### 上下标、根号
+
+$$
+x_{ij}^2	\quad
+{}_1^2X_3^4	\quad
+\sqrt[3]{x}
+$$
+
+##### 分数
+
+`\frac{1}{2}`
+$$
+\frac{1}{2}
+$$
+
+##### 运算符
+
+$$
+\pm\; 	\times\; 	\div\; 	\cdot\; \\
+\cap\; 	\cup\;
+\geq\; 	\leq\;
+\neq\;	\approx\; \equiv
+$$
+
+##### 积分、求和
+
+$$
+\sum_{i=1}^n i
+\quad\prod_{i=1}^n
+\quad\lim_{x\to0}x^2
+\quad\int_a^b x^2 dx\quad	\iint
+$$
+
+##### 箭头
+
+$$
+\leftarrow\quad \longleftarrow	\\
+\rightarrow\quad \longrightarrow	\\
+\leftrightarrow\quad \longleftrightarrow	\\
+\Leftarrow\quad \Longleftarrow	\\
+\Rightarrow\quad \Longrightarrow	\\
+\Leftrightarrow\quad \Longleftrightarrow
+$$
+
+##### 标注
+
+$$
+\bar{x}\quad 
+\vec{x}\quad
+\hat{x}\quad
+\mathring{x}\quad
+\dot{x}
+$$
+
+##### 括号
+
+$$
+(x)\quad	[x]\quad	\{x\} \quad
+\lvert x \rvert
+$$
+
+##### 省略号
+
+$$
+\dots\quad \cdots\quad
+\vdots\quad
+\ddots\quad
+$$
+
+##### 矩阵
+
+$$
+\begin{array}{ccc}
+x_1 & x_2 & \dots\\
+x_3 & x_4 & \dots\\
+\vdots& \vdots& \ddots
+\end{array}
+$$
+
+加分隔符的矩阵：
+$$
+\begin{pmatrix} a&b\\c&d \end{pmatrix} \quad
+\begin{bmatrix} a&b\\c&d \end{bmatrix} \quad
+\begin{Bmatrix} a&b\\c&d \end{Bmatrix} \quad
+\begin{vmatrix} a&b\\c&d \end{vmatrix} \quad
+\begin{Vmatrix} a&b\\c&d \end{Vmatrix}
+$$
+
+##### 对齐长公式
+
+$$
+\begin{split}
+x ={} &a+b+c+{} \\
+&d+e+f+g
+\end{split}
+$$
+
+##### 公式组
+
+$$
+\begin{gather}
+a = b+c+d \\
+x = y+z
+\end{gather}
+$$
+
+对齐公式组,，用`&`对齐
+$$
+\begin{align}
+a &= b+c+d \\
+x &= y+z
+\end{align}
+$$
+
+##### 分支公式
+
+$$
+y=
+\begin{cases}
+-x,\quad x\leq0 \\
+x,\quad x>0
+\end{cases}
+$$
+
+##### 数学字体
+
+$$
+\mathcal A	\mathcal Z	\\
+\mathbb R	\mathbb N	\\
+\mathfrak F	\mathfrak L	\\
+\mathscr F	\mathscr K
+$$
 

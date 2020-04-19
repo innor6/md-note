@@ -8,6 +8,10 @@
 
 EOF：`ctrl + D`
 
+中断：`ctrl + C/?`（向进程发送 `SIGINT` 信号）
+
+清屏：`ctrl + L`
+
 ## 目录结构
 
 - **bin 存放二进制可执行文件(ls,cat,mkdir等)**
