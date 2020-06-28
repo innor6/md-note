@@ -1,3 +1,5 @@
+[TOC]
+
 说明：
 
 - 大小写不敏感，通常关键字使用大写
@@ -65,7 +67,7 @@ WHERE condition
 
 **空值**
 
-```
+```sql
 WHERE column IS/IS NOT NULL
 ```
 
@@ -80,7 +82,15 @@ WHERE column IS/IS NOT NULL
 注：
 
 1. 反向操作：NOT BETWEEN、NOT IN
-2. IN 的列表可以来自于子查询
+
+2. IN 的集合可以来自于子查询，常用于嵌套查询
+
+3. ANY / ALL可表示任意 / 且：
+
+   ```sql
+   WHERE score > any(...) //score大于集合中任意一个元素，即大于最小值
+   WHERE score > all(...) //score大于集合中所有元素，即大于最大值
+   ```
 
 **字符串运算符**
 
@@ -112,11 +122,33 @@ ORDER BY column [ASC/DESC]
 LIMIT num_limit [OFFSET num_offset];
 ```
 
+多字段排序：
+
+```sql
+ORDER BY col1 ASC, col2 DESC
+```
+
+从下标0开始取2条记录：
+
+```sql
+LIMIT 0,2
+```
+
 
 
 ### JOIN
 
 连接多个表，通常连接后再使用WHERE条件
+
+**多表查询**
+
+用where进行连接（交集）
+
+```sql
+SELECT column, another_column, …
+FROM table1, table2
+WHERE table1.id = table2.id;
+```
 
 **INNER JOIN**
 
@@ -127,7 +159,7 @@ LIMIT num_limit [OFFSET num_offset];
 ```sql
 SELECT column, another_table_column
 FROM A
-INNER JOIN another_table 
+INNER JOIN B
     ON A.key = B.key
 WHERE condition(s)
 ```
@@ -146,6 +178,12 @@ WHERE condition(s)
 
 ### 表达式和别名
 
+**别名 AS**
+
+```sql
+SELECT a AS alias, b AS blias from ...
+```
+
 在 SELECT 和 WHERE 中使用表达式：
 
 ```sql
@@ -155,7 +193,7 @@ FROM physics_data
 WHERE ABS(particle_position) * 10.0 > 500;
 ```
 
-**别名 AS**
+在`SELECT ... FROM ...`创建的别名，在后续使用时（`WHERE`、`JOIN`等），可以直接用别名 替代原名
 
 ```sql
 SELECT column AS better_column_name
@@ -164,8 +202,6 @@ INNER JOIN widget_sales
   ON mywidgets.id = widget_sales.widget_id;
 ```
 
-在`SELECT ... FROM ...`对列名、表名使用别名，在后续使用时（`WHERE`、`JOIN`等），可以直接用别名 替代原名
-
 
 
 ### 聚集函数
@@ -173,10 +209,14 @@ INNER JOIN widget_sales
 - 选择一个数值属性列，遍历其中元素进行计算，返回单一值
 - 配合别名**AS**便于阅读
 - **WHERE**进行第一次过滤
-- 配合**GROUP BY**可先将某列中值相同的元素合为一组，再分别对每组调用聚集函数
-- **HAVING**对打组后的返回值进行过滤
+- **GROUP BY**对记录按指定列的值进行分组，随后可分别对每组调用聚集函数
+- **HAVING**对打组后的返回值进行二次过滤
 
-**注意**：使用打组后，一个组只会返回一行结果
+**注意**：
+
+使用打组后，一个组只会返回一行结果
+
+having和where后面一样都是写条件表达式，只是having针对组内元素，因此having的条件表达式还可以用聚合函数。
 
 ```sql
 SELECT FUNC(column_or_expression) AS alias, column2, ...
@@ -196,19 +236,29 @@ HAVING group_condition;
 
 ### 集合操作
 
+将两个查询结果（行）取并集/交集/去除（**UNION / UNION ALL / INTERSECT / EXCEPT**），要求具有相同的列数。
+
+将含相同列的记录合并：
+
+```
+查询子句1 UNION 查询子句2
+```
+
+执行顺序：
+
+```
 SELECT column, another_column
 FROM mytable
 **UNION / UNION ALL / INTERSECT / EXCEPT
 	SELECT other_column, yet_another_column
 	FROM another_table**
 ORDER BY column DESC
-LIMIT *n*;
+LIMIT n;
+```
 
-将两个查询结果（行）取并集/交集/去除，要求具有相同的列数。
+- 集合操作发生于**ORDER BY**和**LIMIT**之前。
 
-集合操作发生于**ORDER BY**和**LIMIT**之前。
-
-**UNION ALL**在合并行时不去重复的行，其余操作都会去重。
+- **UNION ALL**在合并行时不去重复的行，其余操作都会去重。
 
 
 
@@ -218,7 +268,7 @@ LIMIT *n*;
 
 插入行（可使用表达式）
 
-```
+```sql
 INSERT INTO mytable
 VALUES (val1, val2, ...),
        (val3, expr, ...), ...
@@ -276,8 +326,11 @@ CREATE TABLE IF NOT EXISTS mytable (
     id INTEGER PRIMARY KEY,
     title TEXT,
     director TEXT,
-    year INTEGER, 
-    …
+    year INTEGER DEFAULT 1990, 
+    …,
+    //约束条件也可以写在最后，如
+    primary key(id,name)
+    
 );
 ```
 
@@ -289,13 +342,33 @@ CREATE TABLE IF NOT EXISTS mytable (
 - DATE, DATETIME
 - BLOB
 
-**限制条件**
+函数year(column_date)可以获取datetime的年。
+
+**约束条件**
 
 - PRIMARY KEY
 - AUTOINCREMENT
 - UNIQUE
+- NOT NULL
 - CHECK (expression)
 - FOREIGN KEY
+
+添加主码约束：ALTER TABLE mytable ADD primary key(id);
+删除主码约束：ALTER TABLE mytable DROP primary key;
+通过修改字段来修改约束：ALTER TABLE mytable MODIFY id int primary key;
+
+删除唯一约束：ALTER TABLE mytable DROP index col_name;
+修改唯一约束：modify
+
+关于外码：
+
+```
+FORIGN KEY(本表中的字段) references 另一表名(另一表的字段) 
+```
+
+- 外码所引用的字段在主表中必须为主码
+- 副表插入记录时，外码的值必须在主表中已存在
+- 主表的记录被副表引用时，不能被删除
 
 
 
@@ -330,7 +403,7 @@ RENAME TO new_table_name;
 
 删除表
 
-```
+```sql
 DROP TABLE IF EXISTS mytable;
 ```
 

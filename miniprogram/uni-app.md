@@ -1,5 +1,14 @@
 # 常用
 
+定时器
+
+```js
+uni.showToast({title: '注册成功'});
+setTimeout(function(){uni.navigateBack();},1000);
+```
+
+
+
 ##### toast
 
 ```
@@ -11,7 +20,20 @@ uni.showToast({
 
 uni.showLoading({title: '加载中',});	//onLoad开头使用
 uni.hideLoading();	//onLoad中request返回success时
-uni.showToast({title: '连接服务器失败',icon: 'none'})	//fail时
+uni.showToast({title:'连接服务器失败', icon:'none'})	//fail时
+```
+
+
+
+##### action_sheet
+
+用于列表类的选择
+
+```js
+uni.showActionSheet({
+    itemList: this.examTypeList,
+    success: res => { this.examType = this.examTypeList[res.tapIndex] }
+});
 ```
 
 
@@ -19,8 +41,8 @@ uni.showToast({title: '连接服务器失败',icon: 'none'})	//fail时
 ##### 跳转
 
 ```
-uni.navigateTo
-uni.redirectTo
+uni.navigateTo({url: '../login/login',});
+uni.redirectTo	//清空页面栈，重定向
 uni.reLaunch
 uni.switchTab
 uni.navigateBack
@@ -31,6 +53,17 @@ https://uniapp.dcloud.io/api/router?id=navigateto
 
 
 ##### 数据缓存
+
+```
+//同步存
+uni.setStorageSync('SUID' , res.data.u_id + '');
+//同步取
+var SUID  = uni.getStorageSync('SUID');
+//同步删除
+uni.removeStorageSync('key');
+```
+
+
 
 https://uniapp.dcloud.io/api/storage/storage?id=setstorage
 
@@ -44,11 +77,56 @@ https://www.csweigou.com/article/2143.html
 
 ```
 setTimeout(callback, delay, rest)
+setTimeout(function(){uni.navigateBack();},1000);
 ```
 
 dealy为毫秒，rest为可选的传给回调函数的参数。
 
 使用场景：数据提交成功后，显示toast，然后1000ms后触发页面跳转
+
+
+
+##### 日期格式
+
+```js
+// 计算今天的日期
+let now = new Date();
+let y = now.getFullYear();
+let m = now.getMonth()+1;	if (m<10) m = '0'+m;
+let d = now.getDate();
+this.setDateTime = y+'-'+m+'-'+d+' 00:00:00';
+
+    
+// 计算经过的时间的hh-mm-ss格式
+//先获取从1970-1-1 8:00:00到现在的毫秒数
+{ let d = new Date(); this.start = d.getTime()  }	
+{ let d = new Date(); this.end = d.getTime()  }
+//毫秒数相减
+let passed =  this.end - this.start;	
+//从1970-1-1 08:00:00减去8小时,再加上passed毫秒数
+let t = new Date();
+t.setTime(-28800000+passed);
+//时间格式的转化
+let hh = t.getHours();		if (hh<10) hh = '0' + hh;
+let mm = t.getMinutes();	if (mm<10) mm = '0' + mm;
+let ss = t.getSeconds();	if (ss<10) ss = '0' + ss;
+this.passedtime = hh + ':' + mm + ':' + ss;
+
+//hh-mm-ss转换为秒数
+let tt = '01:30:03'
+let hh = '' + tt[0] + tt[1];
+let mm = '' + tt[3] + tt[4];
+let ss = '' + tt[6] + tt[7];
+this.duration = hh*3600+mm*60+ss*1;
+```
+
+
+
+
+
+##### 下拉刷新
+
+[需要在page.json的style中设置](https://uniapp.dcloud.io/api/ui/pulldown)
 
 
 
@@ -76,11 +154,34 @@ pages.json中“condition”配置多个路径，保存后，ctrl+R可以选择�
 
 进入微信开发者工具—工具—编译配置，选择页面。
 
-##### 底部导航
+##### tabBar
 
 在pages.json中的"tabBar"中设置；
 
 图标可以去iconfont网站下载，下两种颜色#333333、选中颜色，大小80，png。图标放到static/tabbar文件夹下。
+
+```
+"tabBar": {
+		"color":"#000000",
+		"selectedColor":"#4CD964",
+		"borderStyle":"white",
+		"backgroundColor":"#FFFFFF",
+		"list": [
+			{
+				"pagePath":"pages/index/index",
+				"text":"主界面",
+				"iconPath":"static/tabbar/index.png",
+				"selectedIconPath":"static/tabbar/indexed.png"
+			},
+			{
+				"pagePath":"pages/my/my",
+				"text":"测试用",
+				"iconPath":"static/tabbar/my.png",
+				"selectedIconPath":"static/tabbar/myed.png"
+			}
+		]
+	},
+```
 
 ##### 顶部导航标题
 
@@ -90,71 +191,33 @@ pages.json中“condition”配置多个路径，保存后，ctrl+R可以选择�
 
 
 
-# 组件样式
+# thorui
 
-##### view
+pages.json
 
-`<view hover-class="other-class>"`属性hover-class可以为其他的css样式，使得在按下时样式发生变化。
-
-##### text
-
-换行\n。
-
-属性selectable是bool类型，需要冒号：`<text :selectable="true">`
-
-##### css选择器
-
-class="..."
-
-id="..."
-
-```css
-.classname>view{} /*子类选择器*/
-.view:nth-of-type(2){...}
-.view:nth-of-type(odd){...} /*奇偶选择器*/
-.view:nth-of-type(even){...}
+```
+//自动引入 thorui组件
+	"easycom": {
+			"autoscan": true,
+			"custom": {
+				"tui-(.*)": "@/components/thorui/tui-$1/tui-$1.vue"
+			}
+	},
 ```
 
-[CSS选择器](https://www.runoob.com/cssref/css-selectors.html)
+App.vue
 
-##### Flex
-
-[A Complete Guide to Flexbox](https://css-tricks.com/snippets/css/a-guide-to-flexbox/)
-
-[阮一峰的flex教程](http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
-
-组件的嵌套，里面的元素变为item。
-
-```css
-/*居中*/
-display: flex;
-justify-content: center;
-align-items: center;
-
-.parent {
-display: flex;
-    
-/*主轴方向*/
-flex-direction: row | row-reverse | column | column-reverse;
-/*如何换行*/
-flex-wrap: nowrap | wrap | wrap-reverse;
-
-/*主轴对齐方式*/
-justify-content: flex-start | flex-end | center | space-between | space-around;
-    
-/*cross轴对齐方式*/
-align-items: flex-start | flex-end | center | baseline | stretch;
-/*cross轴对齐方式*/
-align-content: flex-start | flex-end | center | space-between | space-around | stretch;
-}
-
-
-.sub {
-    flex: i; /*[推荐]这个item占i份的空间（自动缩放）*/
-    flex-shrink: 0; /*此item不被flex缩放*/
-    align-self: auto | flex-start | flex-end | center | baseline | stretch; /*某个item覆盖父类的align-items*/
-}
 ```
+/*每个页面公共css uParse为优化版本*/
+	@import './common/app.css';
+	/* #ifndef APP-NVUE */
+	@import './components/uni/uParse/src/wxParse.css';
+	/* #endif */
+```
+
+
+
+
 
 # JS
 
@@ -212,7 +275,18 @@ class&style：
 <template v-else>
     <view>...</view>
 </template>
+   
 ```
+
+ v-show小结：
+1、v-show仅仅控制元素的显示方式，通过display属性的none
+2、当我们需要经常切换某个元素的显示/隐藏时，使用v-show会更加节省性能上的开销
+
+v-if小结：
+1、v-if会控制这个DOM节点的存在与否。
+2、如果在运行时条件很少改变，则使用 v-if 较好。
+
+
 
 ##### 列表渲染
 
@@ -261,6 +335,30 @@ objlist:{
         {{index}} - {{val}}
     </view>
 </block>
+```
+
+
+
+
+
+##### 动态变量名
+
+```js
+var vars={}; //批量定义
+for(var i=0;i<5;i++){
+    var varName='name-'+i;  //动态定义变量名
+    vars[varName]='value-'+i;  //动态赋值
+}
+console.log(vars);
+```
+
+另一种方法（没试过）
+
+```js
+var v_1 = "我是v_1 的值";
+var v_2 = "我是v_2 的值";
+var v_ = 'v_' + ${value}; //拼接变量名
+console.log( eval( v_) );
 ```
 
 

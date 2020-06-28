@@ -59,3 +59,41 @@
 下午13:00至16:00，晚上19:00到22:00，隔天发货
 ```
 
+
+
+
+
+## 数据库设计
+
+
+
+##### 用户数据表
+
+id：自增id
+
+openid
+
+name
+
+avatar
+
+regsiter_time
+
+
+
+```mysql
+CREATE TABLE member (
+	uid INT(11) NOT NULL AUTO_INCREMENT COMMENT '用户id',
+    openid VARCHAR(100) NOT NULL COMMENT '微信openid',
+	name VARCHAR(50) NOT NULL COMMENT '用户昵称',
+	avatar VARCHAR(200) NOT NULL COMMENT '用户头像',
+	regsiter_time DATETIME NOT NULL COMMENT '用户注册时间',
+	PRIMARY KEY (uid),
+	UNIQUE KEY (openid)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8mb4;
+```
+
+
+
+
+

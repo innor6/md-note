@@ -193,3 +193,4 @@ IO复用：事件驱动，reactor，同步。
 3. 还有其他的fd虚假的可读的情形。
 
 非阻塞IO容易出现 short write / short read，
+

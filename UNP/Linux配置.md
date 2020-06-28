@@ -108,7 +108,7 @@ apt-get install net-tools
   sudo vim /etc/profile
   ```
 
-  末尾添加
+  添加
 
   ```
   export GOROOT=/usr/local/go
@@ -139,7 +139,70 @@ apt-get install net-tools
   	src/	# 源码
   ```
 
-  
+
+
+
+##### MySQL
+
+https://dev.mysql.com/doc/mysql-apt-repo-quick-guide/en/
+
+1. 添加APT库
+
+   1. 在 https://dev.mysql.com/downloads/repo/apt/下载deb
+
+   2. 安装发行包
+
+      ```
+      sudo dpkg -i mysql-apt-config_0.8.15-1_all.deb
+      ```
+
+      进入配置页面选择MySQL5.7版本
+
+      选择ok
+
+   3. 更新apt
+
+      ```
+      sudo apt-get update
+      ```
+
+2. 安装MySQL
+
+   ```
+   sudo apt-get install mysql-server
+   ```
+
+   期间会要求设置root密码
+
+3. 开启和关闭MySQL Server
+
+   安装后自动为开启状态，查看状态：
+
+   ```
+   sudo service mysql status
+   ```
+
+   关闭服务：
+
+   ```
+   sudo service mysql stop
+   ```
+
+   开启服务：
+
+   ```
+   sudo service mysql start
+   ```
+
+   
+
+
+
+
+
+
+
+
 
 
 

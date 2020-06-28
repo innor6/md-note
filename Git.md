@@ -1,4 +1,8 @@
-##### 下载安装
+[TOC]
+
+
+
+### 下载安装
 
 安装后打开git bash
 
@@ -9,7 +13,9 @@ $ git config --global user.name "innor"
 $ git config --global user.email "innor@mail.ustc.edu.cn
 ```
 
-##### 创建版本库
+
+
+### 创建版本库
 
 打开bash
 
@@ -26,7 +32,9 @@ $ git init
 Initialized empty Git repository in C:/Users/64589/Documents/git/learngit/.git/
 ```
 
-##### 添加文件与提交
+
+
+### 添加文件与提交
 
 在“learngit”目录（子目录）下创建文件“readme.txt”
 
@@ -62,7 +70,9 @@ $ git diff -cached readme.txt #暂存区和仓库的差异
 $ git diff HEAD -- readme.txt #目标版本与工作区的差异
 ```
 
-##### 历史版本
+
+
+### 查看历史版本
 
 查看版本日志
 
@@ -90,7 +100,9 @@ $ git reset --hard a068
 $ git reflog
 ```
 
-##### 修改控制
+
+
+### 修改控制
 
 撤销对工作区文档的修改/删除（回退到仓库中的版本）
 
@@ -106,9 +118,11 @@ $ git restore --staged readme.txt
 # git reset HEAD readme.txt
 ```
 
-# 远程仓库
 
-##### 创建SSH Key
+
+### 远程仓库
+
+**创建SSH Key**
 
 ```bash
 $ ssh-keygen rsa -C "innor@mail.ustc.edu.cn"
@@ -118,13 +132,13 @@ Github-Setting-SSH Keys，将公钥“id_rsa.pub”的内容填入。
 
 在Github右上角，+ new repository，创建完毕后
 
-##### 关联远程仓库origin
+**关联远程仓库origin**
 
 ```bash
 $ git remote add origin git@github.com:innorLMJ/learngit.git
 ```
 
-##### 第一次推送
+**第一次推送**
 
 推送本地分支master，关联远程分支master
 
@@ -132,17 +146,19 @@ $ git remote add origin git@github.com:innorLMJ/learngit.git
 $ git push -u origin master
 ```
 
-##### 普通推送
+**普通推送**
 
 ```bash
 $ git push origin master
 ```
 
-##### 克隆远程库到当前目录
+**克隆远程库到当前目录**
 
 ```bash
 $ git clone git@github.com:innorLMJ/xxx.git
 ```
+
+
 
 # SourceTree
 

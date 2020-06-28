@@ -16,6 +16,35 @@
 
 
 
+**使用脚本——2**
+
+写一个while循环的脚本（test.sh）：
+
+```shell
+int=1
+while(($int<=10))
+do
+        ./client 47.97.90.53
+        let "int++"
+done
+```
+
+设置可执行权限：
+
+```
+chmod u+x test.sh
+```
+
+运行脚本
+
+```
+./test.sh
+```
+
+
+
+
+
 #### 定义变量
 
 ```bash
