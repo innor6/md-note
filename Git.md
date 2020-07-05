@@ -45,6 +45,7 @@ Initialized empty Git repository in C:/Users/64589/Documents/git/learngit/.git/
 ```bash
 $ git add readme.txt
 $ git add ... ... other files
+$ git add -A	#添加所有新增、修改、删除的文件
 ```
 
 提交修改及说明到当前仓库分支（master）
@@ -136,6 +137,15 @@ Github-Setting-SSH Keys，将公钥“id_rsa.pub”的内容填入。
 
 ```bash
 $ git remote add origin git@github.com:innorLMJ/learngit.git
+```
+
+##### 修改远程仓库地址
+
+```bash
+$ git remote set-url origin git@github.com:innor6/md-note.git
+#也可以先删再加
+git remote rm origin
+git remote add origin [url]
 ```
 
 **第一次推送**

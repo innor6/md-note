@@ -154,7 +154,8 @@ $$
 \pm\; 	\times\; 	\div\; 	\cdot\; \\
 \cap\; 	\cup\;
 \geq\; 	\leq\;
-\neq\;	\approx\; \equiv
+\neq\;	\approx\; \equiv \\
+\in \not\in \\
 $$
 
 ##### 积分、求和
@@ -162,7 +163,7 @@ $$
 $$
 \sum_{i=1}^n i
 \quad\prod_{i=1}^n
-\quad\lim_{x\to0}x^2
+\quad\lim_{x\to\infty}x^2
 \quad\int_a^b x^2 dx\quad	\iint
 $$
 
