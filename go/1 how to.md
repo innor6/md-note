@@ -40,7 +40,7 @@ repository：
 ```bash
 $ mkdir hello
 $ cd hello
-$ go mod init github.com/user/hello
+$ go mod init github.com/user/hello #user是用户名
 go: creating new go.mod: module github.com/user/hello
 $ cat go.mod
 module example.com/user/hello

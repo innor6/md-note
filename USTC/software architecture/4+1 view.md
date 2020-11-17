@@ -16,7 +16,7 @@ a software design is a multi-faceted artifact produced by the design  process an
 
 **Use Cases**: illustrated by this fifth view
 
-![4+1view](C:\Users\64589\OneDrive\文档\Tepora\USTC\software architecture\pic\4+1view.png)
+![4+1view](.\pic\4+1view.png)
 
 ## Logical Architecture
 
@@ -189,7 +189,7 @@ Use Case Relationships:
 - include: a use cases shared by multiple use cases
 - extend: optional behavior, run under certain conditions, run based on actor selection
 
-![Use Case Diagrams](C:\Users\64589\OneDrive\文档\Tepora\USTC\software architecture\pic\Use Case Diagrams.png)
+![Use Case Diagrams](.\pic\Use Case Diagrams.png)
 
 ## Textual Description
 
@@ -216,7 +216,7 @@ a description of a group of objects with:
 
 
 
-![Notion of Class](C:\Users\64589\OneDrive\文档\Tepora\USTC\software architecture\pic\Notion of Class.png)
+![Notion of Class](.\pic\Notion of Class.png)
 
 ##### Notion of Stereotype
 
@@ -224,7 +224,7 @@ a description of a group of objects with:
 - Tagged value
 - Constraint
 
-![Notion of Stereotype](C:\Users\64589\OneDrive\文档\Tepora\USTC\software architecture\pic\Notion of Stereotype.png)
+![Notion of Stereotype](.\pic\Notion of Stereotype.png)
 
 ##### Boundary, Entity, and Control Classes
 
@@ -254,7 +254,7 @@ Control classes:
 - Aggregation  ◇---------
 - Inheritance  ◁---------
 
-![Relationships_association](C:\Users\64589\OneDrive\文档\Tepora\USTC\software architecture\pic\Relationships_association.png) 
+![Relationships_association](.\pic\Relationships_association.png) 
 
 ##### Class Diagram
 

@@ -138,16 +138,16 @@ align-items: center;
 .parent {
 display: flex;
     
-/* 主轴方向 */
+// 主轴方向
 flex-direction: row | row-reverse | column | column-reverse;
-/* 如何换行 */
+// 如何换行 
 flex-wrap: nowrap | wrap | wrap-reverse;
-/* 主轴对齐方式 */
+// 主轴对齐方式
 justify-content: flex-start | flex-end | center | space-between | space-around;
     
-/* cross轴对齐方式 */
+// cross轴对齐方式
 align-items: flex-start | flex-end | center | baseline | stretch;
-/* 行与行的对齐方式 */
+// 行与行的对齐方式
 align-content: flex-start | flex-end | center | space-between | space-around | stretch;
 }
 
@@ -354,14 +354,33 @@ css：
 
 ```css
 {
-word-break: break-all;		//断句换行方式
+word-break: break-all;		//断句换行方式（否则可能只显示一行且超出画面）
 overflow: hidden;
-text-overflow: ellipsis;	//超出部分变为省略号
+
 display: -webkit-box;
 -webkit-box-orient: vertical;
 -webkit-line-clamp: 2;		//设置最大行数
+text-overflow: ellipsis;	//超出部分变为省略号
 }
 ```
+
+
+
+overflow: auto  //超出后变为scroll
+
+
+
+缩进
+
+```
+// 实现悬挂缩进：首行缩进取负值，再用padding弥补
+text-indent: -2em;
+padding: 2em;
+
+//em，相对长度单位，为父元素文本字体尺寸的倍数。
+```
+
+
 
 
 

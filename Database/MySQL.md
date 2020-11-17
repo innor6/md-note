@@ -6,7 +6,9 @@
 mysql -u root -p
 ```
 
+serv：6***
 
+local：123456
 
 查看数据库
 

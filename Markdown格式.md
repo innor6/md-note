@@ -181,11 +181,14 @@ $$
 ##### 标注
 
 $$
+\overline{x} \quad
 \bar{x}\quad 
 \vec{x}\quad
+\widehat{x}\quad
 \hat{x}\quad
 \mathring{x}\quad
-\dot{x}
+\dot{x} \quad
+\ddot{x}
 $$
 
 ##### 括号

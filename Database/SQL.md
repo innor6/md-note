@@ -16,9 +16,9 @@
 
 ```sql
 SELECT DISTINCT column, AGG_FUNC(column_or_expression), …
-FROM mytable
-    JOIN another_table
-      ON mytable.column = another_table.column
+FROM mytable a
+    JOIN another_table b
+      ON a.column = b.column
     WHERE constraint_expression
     GROUP BY column
     HAVING constraint_expression
@@ -106,6 +106,10 @@ WHERE column IS/IS NOT NULL
 2. 反向操作：NOT LIKE、NOT IN
 3.  **LIKE**的模式匹配可使用通配符（ `%` ：0个或多个任意字；`_` ：单个任意字符）
 
+**日期**
+
+`datediff(w1.Date, w2.Date) = 1` ：日期作差，1表示左边比右边晚一天
+
 
 
 ### ORDER BY/LIMIT OFFSET
@@ -133,6 +137,8 @@ ORDER BY col1 ASC, col2 DESC
 ```sql
 LIMIT 0,2
 ```
+
+**下标偏移从0开始！！**
 
 
 
@@ -170,7 +176,7 @@ WHERE condition(s)
 
 用法同 `INNER JOIN` 
 
-`LEFT JOIN`：保留表A中的全部行，并连接B中的行
+`LEFT JOIN`：保留表A中的全部行，并连接B中的行。A中的key若不能在B中找到对应的key，则B部分字段为NULL。
 
 `FULL JOIN`：保留表A和表B中的所有行，能连接则连接，不能则对应列留空值。
 
@@ -232,8 +238,6 @@ HAVING group_condition;
 - AVG(column)
 - SUM(column)
 
-
-
 ### 集合操作
 
 将两个查询结果（行）取并集/交集/去除（**UNION / UNION ALL / INTERSECT / EXCEPT**），要求具有相同的列数。
@@ -259,6 +263,56 @@ LIMIT n;
 - 集合操作发生于**ORDER BY**和**LIMIT**之前。
 
 - **UNION ALL**在合并行时不去重复的行，其余操作都会去重。
+
+
+
+### 一些函数
+
+`datediff(w1.Date, w2.Date) = 1` ：日期作差，1表示左边比右边晚一天
+
+`if(expr1, expr2, expr3)`：三目运算，如果 `expr1` 为真（非0非null），返回 `expr2` ，否则返回 `expr3`
+
+`round(col, decimals)`：舍入，第二个参数decimals决定保留的小数位数。
+
+
+
+
+
+# 笔记
+
+### 别名
+
+如果是连接两个表，则两个表建议取别名，使用字段时，相同名字的字段必须使用 `别名.xxx` 来避免歧义；
+
+但是如果是嵌条表达式，则不必用别名：
+
+```SQL
+--获取不在dept_manager表中的employees
+--虽然两个表都有emp_no字段，但是由于是嵌条查询，因此可以不用别名
+SELECT emp_no FROM employees
+WHERE emp_no NOT IN (
+    SELECT emp_no FROM dept_manager
+)
+```
+
+SELECT ... FROM ... 中定义的别名，在having中也可以使用，甚至可以给函数表达式做别名
+
+```SQL
+--统计出现次数超过15次的人
+SELECT emp_no, COUNT() t FROM salaries
+GROUP BY emp_no
+HAVING t > 15	--可以使用COUNT()的别名t
+```
+
+
+
+### GROUP BY
+
+易错：使用 `GROUP BY` 时， SELECT子句中只能有聚合键（即被GROUP BY的字段）、聚合函数、常数，而不能出现非聚合字段。
+
+1. 一个聚合的某一个分组里，一个聚合字段值对应了多个非聚合字段值，因此，如果在 SELECT 中使用非聚合字段，则不知道应该选择哪一个非聚合字段值。如果希望 SELECT 中出现非聚合字段，可以考虑看能否把字段放到聚合函数中。
+2. 当有一个聚合中，一个分组中满足HAVING条件的有多条记录时，只能得到其中的一条记录，则其他满足条件的记录就无法查出了。
+3. HAVING 筛选的是分组，而不是记录，因此应该使用聚合函数来构造条件表达式
 
 
 

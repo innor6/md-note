@@ -38,7 +38,7 @@ catch (exception& e ) {
 1. 常用函数：size(), empty(), data(), front(), back(), push_back(), pop_back(), capacity()
 2. 实现：
    - vector：顺序表
-   - deque：map，元素为buffer指针
+   - deque：map（其实是指针数组），元素为指向buffer块的指针
    - list：双向环状链表
    - forward_list：单链表
    - set/map/multi：红黑树

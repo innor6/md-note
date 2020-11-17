@@ -1,6 +1,6 @@
 # 常用
 
-定时器
+##### 定时器
 
 ```js
 uni.showToast({title: '注册成功'});
@@ -11,15 +11,16 @@ setTimeout(function(){uni.navigateBack();},1000);
 
 ##### toast
 
-```
+```js
 uni.showToast({
     title: '标题',
     icon: none	//不设置该属性则为√的图标
 	duration: 1500 //ms，默认值
 });
 
-uni.showLoading({title: '加载中',});	//onLoad开头使用
-uni.hideLoading();	//onLoad中request返回success时
+// loading
+uni.showLoading({title: '加载中',});
+uni.hideLoading();					//请求返回后
 uni.showToast({title:'连接服务器失败', icon:'none'})	//fail时
 ```
 
@@ -27,7 +28,7 @@ uni.showToast({title:'连接服务器失败', icon:'none'})	//fail时
 
 ##### action_sheet
 
-用于列表类的选择
+用于列表类的选择（最多只能6个）
 
 ```js
 uni.showActionSheet({
@@ -35,6 +36,25 @@ uni.showActionSheet({
     success: res => { this.examType = this.examTypeList[res.tapIndex] }
 });
 ```
+
+
+
+```js
+uni.showModal({
+	title: '标题（可省略）',
+	content: '这是一个模态弹窗',
+	//showCancel: false,	//是否有取消按钮，默认为true
+	success: res => {
+		if (res.confirm) {
+            console.log('用户点击确定');
+        } else if (res.cancel) {
+            console.log('用户点击取消');
+        }
+	}
+});
+```
+
+
 
 
 
@@ -46,6 +66,9 @@ uni.redirectTo	//清空页面栈，重定向
 uni.reLaunch
 uni.switchTab
 uni.navigateBack
+
+// 跳转回原页面
+setTimeout(function(){uni.navigateBack()}, 1000);
 ```
 
 https://uniapp.dcloud.io/api/router?id=navigateto
@@ -70,6 +93,29 @@ https://uniapp.dcloud.io/api/storage/storage?id=setstorage
 设置失效时间：
 
 https://www.csweigou.com/article/2143.html
+
+
+
+##### 剪切板
+
+```js
+// 复制
+uni.setClipboardData({
+    data: 'hello',	//要复制的数据
+    success: function () {
+        console.log('success');
+    }
+});
+
+// 粘贴
+uni.getClipboardData({
+    success: function (res) {
+        console.log(res.data);
+    }
+});
+```
+
+
 
 
 
@@ -121,6 +167,17 @@ this.duration = hh*3600+mm*60+ss*1;
 ```
 
 
+
+##### 小程序分享
+
+```js
+onLoad() {
+    // 开启转发
+    uni.showShareMenu({
+    withShareTicket: true
+    })
+},
+```
 
 
 
@@ -254,7 +311,8 @@ class&style：
 <view :class="[var>10?c1:'', v2>10?c2:'']">//使用三目运算符?:
 <view :class="{c1:isTrue1, c2:isTrue2}"> //条件样式
 
-<view class="box" :style="{'color':var,'font-size':size+'px'}">
+//动态绑定style时，用逗号分隔
+<view :style="{'color':var,'font-size':size+'px'}">
 //所有非变量都要用引号''圈起来，style不要用upx
 ```
 

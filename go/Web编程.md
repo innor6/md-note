@@ -1,3 +1,62 @@
+GET
+
+```go
+// 用code向微信请求openid
+url := fmt.Sprintf("https://api.weixin.qq.com/sns/jscode2session?appid=%s&secret=%s&js_code=%s&grant_type=authorization_code", appid, secret, code)
+res, err := http.Get(url)
+if err != nil {
+    response.FailServer(c, "code2session请求失败", err, nil)
+    return ""
+}
+
+// 读取响应body
+body, err := ioutil.ReadAll(res.Body)
+defer res.Body.Close()
+if err != nil {
+    response.FailServer(c, "code2session获取失败", err, nil)
+    return ""
+}
+
+// 解析json
+var wxsession WXSession	//解析为自己定义的json格式
+if err := json.Unmarshal(body, &wxsession); err != nil {
+    response.FailServer(c, "code2session解析失败", err, nil)
+    return ""
+}
+```
+
+
+
+POST
+
+```go
+// 请求微信发送一次订阅消息
+url := fmt.Sprintf("https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=%s", accessToken.AccessToken)
+data := gin.H{
+    "touser": order.User.Openid,
+    "template_id": "Nlw54VKoh9qXeQFst3hAo_ofFeXDgAdhYa5OZAdwfds",
+    "data": gin.H{
+        "date3": gin.H{ "value": model.Time(order.CreatedAt)	},
+        "amount2": gin.H{"value": strconv.FormatUint(uint64(order.FeeTotal/100), 10)},
+        "thing8": gin.H{"value": "您的商品已发货，可在小程序中获取快递单号。"},
+    },
+}
+b, _ := json.Marshal(data)
+res, err := http.Post(url,"application/json", bytes.NewBuffer(b))
+if err != nil {
+    response.FailServer(c, "发送订阅消息失败", err, nil)
+	return
+}
+defer res.Body.Close()
+body, _ := ioutil.ReadAll(resp.Body)
+
+response.Success(c, "发送订阅消息成功"+string(body), nil)
+```
+
+
+
+
+
 对于`r *http.Request`
 
 

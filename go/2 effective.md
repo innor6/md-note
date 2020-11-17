@@ -27,7 +27,15 @@ if err := file.Chmod(0664); err != nil {
     log.Print(err)
     return err
 }
+
+if ... {
+
+} else if ... {
+
+}
 ```
+
+
 
 
 
@@ -53,7 +61,7 @@ for { }
 
 for range（返回 `index` 和 `value` ，用于array、slice、map）
 
-```
+```go
 for key, value := range oldMap {
 	newMap[key] = value
 }
@@ -99,6 +107,7 @@ for i, j := 0, len(a)-1; i < j; i, j = i+1, j-1 {
 自上向下匹配，可代替else-if
 
 ```go
+// case是t表达式时，switch后面可以不接变量t（否则应该如下面的“类型选择”那样写）
 t := time.Now()
 switch {
 case t.Hour() < 12:
@@ -150,6 +159,36 @@ case *int:
 
 ### 数据
 
+##### 常量
+
+```go
+type ByteSize float64
+const (
+    _           = iota // 通过赋予空白标识符来忽略iota的第一个值(0)
+    KB ByteSize = 1 << (10 * iota)
+    MB			// - 后面的常量自动应用上面的常量表达式，其中iota自增
+    _			// - 下划线跳过一个枚举值，这里是跳过了GB，但iota仍然自增
+    TB
+    PB
+)
+```
+
+- iota是常量计数器，只能用在常量表达式中。
+- iota在const关键字出现时将被重置为0（const内部的第一行之前），const中每一行常量声明将使iota自增一次（iota可理解为const语句块中的**行索引**）。
+
+
+
+##### 类型转换
+
+```go
+user, _ := c.Get("user")// 有些函数返回一个interface{}对象
+user.(model.User).ID	// 使用该对象的ID字段时需要先类型转换为具体的对象
+```
+
+
+
+
+
 ##### new
 
 分配的内存置零，返回指针（0刚好是零值）
@@ -198,7 +237,7 @@ v := make([]int, 100)	//分配100个int空间
 
 
 
-##### 切片
+##### Slice
 
 go数组不像C中是指针，数组的赋值是副本的拷贝!
 
@@ -216,11 +255,30 @@ s = append(s, s2...)	//添加切片
 
 追加后，可能导致底层数组扩容，因此需要把结果重新赋值给s（原数组等待gc回收）
 
+深拷贝：
+
+```go
+s1 := []int{1,2,3}
+// 深拷贝，修改s2不影响s1（好像只是单层的，如果元素是struct则可以，如果还是silce则需要递归）
+s2 := make([]int, len(s1))
+copy(s2, s1)
+```
 
 
-##### 映射
+
+
+
+
+
+##### Map
 
 - 只要类型支持相等判断，就可以做key（切片不行）
+
+- 必须先创建，再赋值
+
+  ```
+  myMap := make(map[uint]uint, size)	//第二个参数size好像是必须的？
+  ```
 
 - 查找不存在的key时，会返回零值
 
@@ -286,12 +344,29 @@ str := fmt.Sprint("Hello ", 23)	// 生成字符串
 
 
 
+##### 函数
+
+```go
+// 返回多个参数
+func Apple() (ok bool, msg string) {
+	ok = false
+    msg = "错误信息"
+    return
+}
+```
+
+
+
+
+
 ##### 方法
 
-语义：带接收器的函数
+语义：带接收器的函数（类似C++中类的方法）
 
-- 值 只能调用值方法
-- 指针 可以调用指针方法和值方法
+接收器可以为：
+
+- 值：只能调用值方法
+- 指针：可以调用指针方法和值方法
 
 
 
@@ -341,6 +416,5 @@ if str, ok := value.(string); ok {
 	return str.String()
 }
 ```
-
 
 

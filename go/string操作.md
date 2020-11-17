@@ -8,6 +8,23 @@
 
 
 
+##### JSON.Marshal
+
+```go
+// json -> []byte -> string
+b,err := json.Marshal(order.Products)
+string(b)
+
+// string -> []byte -> json
+var products []vo.Product
+err := json.Unmarshal([]byte(order.Products), &products)
+// 注意到解析的目标products是个slice，也能unmarshal
+```
+
+
+
+
+
 ##### Join
 
 字符串链接，把slice a通过分隔符sep链接起来
@@ -91,7 +108,9 @@ fmt.Println("ba" + strings.Repeat("na", 2))
 
 ##### Replace
 
-在s字符串中，把old字符串替换为new字符串，n表示替换的次数，小于0表示全部替换
+- 在s字符串中，把old字符串替换为new字符串，
+
+- n表示替换的次数，小于0表示全部替换（如-1）
 
 ```go
 func Replace(s, old, new string, n int) string
@@ -123,13 +142,13 @@ fmt.Printf("[%q]", strings.Trim(" !!! Achtung !!! ", "! "))
 
 ##### Format 
 
-把其他类型的转换为字符串
+其他类型 to 字符串
 
 ```go
 a := strconv.FormatBool(false)
 b := strconv.FormatFloat(123.23, 'g', 12, 64)
 c := strconv.FormatInt(1234, 10)
-d := strconv.FormatUint(12345, 10)
+d := strconv.FormatUint(12345, 10)	//十进制
 e := strconv.Itoa(1023)
 fmt.Println(a, b, c, d, e)
 ```
@@ -138,7 +157,7 @@ fmt.Println(a, b, c, d, e)
 
 ##### Parse
 
-把字符串转换为其他类型
+字符串 to 其他类型
 
 ```go
 package main
