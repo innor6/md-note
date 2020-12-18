@@ -170,16 +170,134 @@ $ git clone git@github.com:innorLMJ/xxx.git
 
 
 
-# SourceTree
 
-##### 添加git账号
 
-##### 设置ssh
 
-先按照**远程仓库**章节创建SSH Key
 
-工具——选项——一般——SSH客户端配置——SSH客户端：选择OpenSSH
+# Git scm
 
-##### 添加库
+[git-scm](https://git-scm.com/book/zh/v2)
 
-建议先在本地用git建立好库，并连好远程库，再在sourcetree中添加库。
+### 配置config
+
+```bash
+# 配置：用户名、邮箱
+git config --global user.name "John Doe"
+git config --global user.email johndoe@example.com
+```
+
+查看配置
+
+```bash
+git config --list		# 列出所有配置，有同名的配置则选择最后一个
+git config user.name	# 查看某个变量的值
+git config --show-origin rerere.autoUpdate	# 查看某个变量来自哪个配置文件
+```
+
+说明：
+
+- 配置文件有三个地方：
+
+  （局部配置覆盖全局配置）
+
+  - 系统级：`/etc/gitconfig`（git config --system）
+  - 当前用户： `~/.gitconfig`（git config --global） 
+  - 当前仓库（默认）：`.git/config`
+
+
+
+### 忽略
+
+创建 `.gitignore` 文件，写入：
+
+```bash
+# 其实是一种正则表达式匹配，若文件路径file_path被匹配了则忽略
+# 默认会递归的应用到每个子目录中
+
+# 匹配规则：
+# * 	匹配零个或多个任意字符
+# **	匹配零个或多个中间目录，比如 a/**/z 可以匹配 a/z 、 a/b/z 或 a/b/c/z 等。
+# ?		只匹配一个任意字符
+# [abc] 匹配任何一个列在方括号中的字符
+# [0-9] 匹配所有 0 到 9 的数字
+
+# 忽略所有子目录下以.o或.a结尾的文件
+*.[oa]
+
+# !取反，表示虽然忽略了*.a，但不忽略lib.a
+!lib.a
+
+# 忽略文件夹，/表示文件夹
+tmp/
+
+# /在开头表示防止递归匹配，只匹配当前目录下的TODO文件，
+/TODO
+
+doc/*.txt
+doc/**/*.pdf
+```
+
+
+
+### 帮助
+
+```bash
+git add -h		# 只查看verb的可选选项
+git <verb> --help
+git help <verb>
+```
+
+
+
+### 开始
+
+创建仓库
+
+```bash
+# 本地项目文件夹内使用
+git init		
+git add .
+git commit -m "first commit"
+
+# clone远程仓库，它会在当前目录下创建一个项目文件夹
+git clone <url>
+```
+
+
+
+加入到暂存区
+
+```bash
+git add <file name>		# 将新文件/已修改的文件添加到暂存区
+git add .				# 添加所有改动到暂存区
+```
+
+
+
+删除
+
+```bash
+git rm <file name>			# 取消追踪并删除该文件，等待下次提交
+git rm --cached <file name>	# 从暂存区删除
+git rm \*~					# 删除所有以`~`结尾的文件
+```
+
+
+
+移动、重命名
+
+```
+git mv <file src> <file dst>
+```
+
+
+
+
+
+查看差异
+
+```bash
+git diff			# 比较工作区与暂存区
+git diff --stage	# 比较暂存区与commit区
+```
+
