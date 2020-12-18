@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <!-- 30秒刷新一次页面 -->
+    <meta charset="utf-8" http-equiv="refresh" content="30">
+    <title>My New Page</title>
+    <link rel="shortcut icon" href="图片url">
+</head>
+
+<body>
+    <!-- 这是一个注释 -->
+
+    <h1>这是一个标题</h1>
+    <h2>这是一个标题</h2>
+    <h3>这是一个标题</h3>
+
+    <p>这是一个段落。</p>
+    <p>这个<br>段落<br>演示了分行的效果</p>
+
+    <div>
+        <h4>脚本:</h4>
+        <p id="demo">脚本测试文本</p>
+        <script>
+            function myFunction() {
+                x = document.getElementById("demo") // 找到元素
+                x.innerHTML = "Hello JavaScript!";  // 改变元素内容
+                x.style.color = "#ff0000";          // 改变样式
+            }
+        </script>
+        <noscript>抱歉，你的浏览器不支持 JavaScript!</noscript>
+        <button type="button" onclick="myFunction()">点我</button>
+    </div>
+
+
+    <h4>无序列表:</h4>
+    <ul style="list-style-type:square">
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Milk</li>
+    </ul>
+
+    <h4>有序列表:</h4>
+    <ol start="2" type="i">
+        <li>Coffee</li>
+        <li>Tea</li>
+        <li>Milk</li>
+    </ol>
+
+    <h4>表格:</h4>
+    <table border="1" cellspacing="0">
+        <caption>表1 这是一个表标题</caption>
+        <tr>
+            <th></th>
+            <th>Header 1</th>
+            <th>Header 2</th>
+        </tr>
+        <tr>
+            <th>Header 3</th>
+            <td>(0,0)</td>
+            <td>(0,1)</td>
+        </tr>
+        <tr>
+            <th>Header 4</th>
+            <td>(1,0)</td>
+            <td>(1,1)</td>
+        </tr>
+    </table>
+    <hr>
+
+
+    <h1>表单</h1>
+    <form action="提交表单的url" method="get">
+        <!-- 控件常用属性
+            name: 提交时的key，控件名，同时也是单选按钮的组名
+            value: 提交时的value，也是显示的值
+        -->
+        <fieldset>
+            <legend>Personal information:</legend>
+            <!-- 文本域的默认宽度是 20 个字符 -->
+            Username: <input type="text" name="user" value="请填写名字"><br>
+            Password: <input type="password" name="password"><br>
+            Comment: <input type="text" name="comment" value="your comment" size="50"><br>
+
+            <!-- 点击label时，相当于点击for属性所关联id的对象 -->
+            <!-- 同一组的单选按钮，name 取值要一致 -->
+            <!-- checked 默认勾选 -->
+            <input type="radio" name="sex" id="male" value="male">
+            <label for="male">Male</label>
+            <input type="radio" name="sex" id="female" value="female" checked>
+            <label for="female">Female</label>
+            <br>
+
+            <input type="checkbox" name="vehicle" id="Bike" value="Bike">
+            <label for="Bike">I have a bike</label>
+            <br>
+            <input type="checkbox" name="vehicle" value="Car">I have a car
+            <br>
+
+            <!-- selected 默认选中 -->
+            <select>
+                <optgroup label="Swedish Cars">
+                    <option value="volvo">Volvo</option>
+                    <option value="saab">Saab</option>
+                </optgroup>
+                <optgroup label="German Cars">
+                    <option value="mercedes">Mercedes</option>
+                    <option value="audi" selected>Audi</option>
+                </optgroup>
+            </select><br>
+
+            <textarea name="info" rows="10" cols="30">我是一个文本框。</textarea><br>
+
+            <input type="button" name="a" value="普通按钮">
+            <input type="reset" value="重置">
+            <input type="submit" value="提交">
+        </fieldset>
+    </form>
+    <hr>
+
+
+    <div>
+        <h1>超链接</h1>
+        <a href="https://www.runoob.com" target="_blank">
+            <p>这是一个链接，target="_blank"表示在新窗口中打开</p>
+        </a>
+
+        <a href="#pic" style="text-decoration:none;">
+            <p>这是另一个链接，跳转到id="pic"的元素（下面的图片），<br>
+                样式取消了下划线，<br>
+                标签a内可以嵌套图片等其他HTML元素：<br>
+            </p>
+            <img id="pic" loading="lazy" src="img_the_scream.jpg" width="220" height="277" alt="The Scream">
+            <p><cite>The Scream</cite> by Edward Munch. Painted in 1893.</p>
+        </a>
+        <hr>
+    </div>
+
+
+
+    <div>
+        <h1>文本修饰</h1>
+        <b>加粗文本</b><br>
+        <i>斜体文本</i><br>
+        My favorite color is <del>删除</del> <ins>插入</ins>!<br>
+        <code>CODE: Hello World!</code><br>
+        <sub>下标</sub> 和 <sup>上标</sup><br><br>
+        <hr>
+    </div>
+
+
+    <div>
+        <h1 style="text-align:center;">
+            CSS 居中对齐的标题
+        </h1>
+        <p style="font-family:arial;color:red;font-size:20px;">
+            字体样式（字体-颜色-大小）
+        </p>
+        <hr>
+    </div>
+
+
+    <div>
+        <h1>其他标签</h1>
+        <div>
+            <h4>内嵌网页:</h4>
+            <iframe src="demo_iframe.htm" name="iframe_a" width="300" height="300" frameborder="0"></iframe>
+            <p><a href="http://www.runoob.com" target="iframe_a">通过指定target让上面显示RUNOOB.COM页面</a></p>
+        </div>
+
+        <div>
+            <h4>不忽略空格和换行:</h4>
+            <pre>
+            此例演示如何使用 pre 标签
+            不忽略
+            空行和    空格
+        </pre>
+        </div>
+
+        <div>
+            <h4>缩写和显示全拼:</h4>
+            <abbr title="etcetera">etc.</abbr>
+        </div>
+
+        <div>
+            <h4>反向显示:</h4>
+            <p><bdo dir="rtl">该段落文字从右到左显示。</bdo></p>
+        </div>
+
+        <div>
+            <h4>引用:</h4>
+            <p>短引用: <q>Build a future where people live in harmony with nature.</q></p>
+            <p>长引用：Here is a quote from WWF's website:</p>
+            <blockquote cite="http://www.worldwildlife.org/who/index.html">
+                For 50 years, WWF has been protecting the future of nature. The world's leading conservation
+                organization, WWF works in 100 countries and is supported by 1.2 million members in the United States
+                and close to 5 million globally.
+            </blockquote>
+        </div>
+    </div>
+
+    <hr>
+</body>
+
+</html>
