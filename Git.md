@@ -178,13 +178,21 @@ $ git clone git@github.com:innorLMJ/xxx.git
 
 [git-scm](https://git-scm.com/book/zh/v2)
 
-### 配置config
+### config
 
 ```bash
 # 配置：用户名、邮箱
 git config --global user.name "John Doe"
 git config --global user.email johndoe@example.com
+
+# 别名
+git config --global alias.co checkout
+git config --global alias.br branch
+git config --global alias.ci commit
+git config --global alias.st status
 ```
+
+
 
 查看配置
 
@@ -206,20 +214,19 @@ git config --show-origin rerere.autoUpdate	# 查看某个变量来自哪个配�
 
 
 
-### 忽略
+### gitignore
 
 创建 `.gitignore` 文件，写入：
 
-```bash
-# 其实是一种正则表达式匹配，若文件路径file_path被匹配了则忽略
-# 默认会递归的应用到每个子目录中
+（子目录下也可以有自己的.gitignore文件）
 
-# 匹配规则：
-# * 	匹配零个或多个任意字符
-# **	匹配零个或多个中间目录，比如 a/**/z 可以匹配 a/z 、 a/b/z 或 a/b/c/z 等。
-# ?		只匹配一个任意字符
-# [abc] 匹配任何一个列在方括号中的字符
-# [0-9] 匹配所有 0 到 9 的数字
+```bash
+# 默认会递归的应用到每个子目录中
+# 以/开头表示防止递归匹配，只匹配当前目录下的TODO文件，
+/TODO
+
+# 忽略文件夹，/表示文件夹
+tmp/
 
 # 忽略所有子目录下以.o或.a结尾的文件
 *.[oa]
@@ -227,24 +234,16 @@ git config --show-origin rerere.autoUpdate	# 查看某个变量来自哪个配�
 # !取反，表示虽然忽略了*.a，但不忽略lib.a
 !lib.a
 
-# 忽略文件夹，/表示文件夹
-tmp/
-
-# /在开头表示防止递归匹配，只匹配当前目录下的TODO文件，
-/TODO
-
 doc/*.txt
 doc/**/*.pdf
-```
 
-
-
-### 帮助
-
-```bash
-git add -h		# 只查看verb的可选选项
-git <verb> --help
-git help <verb>
+# 其实是一种正则表达式匹配，若文件路径file_path被匹配了则忽略
+# 匹配规则：
+# ?		只匹配一个任意字符
+# * 	匹配零个或多个任意字符
+# **	匹配零个或多个中间目录，比如 a/**/z 可以匹配 a/z 、 a/b/z 或 a/b/c/z 等。
+# [abc] 匹配任何一个列在方括号中的字符
+# [0-9] 0~9字 
 ```
 
 
@@ -255,9 +254,7 @@ git help <verb>
 
 ```bash
 # 本地项目文件夹内使用
-git init		
-git add .
-git commit -m "first commit"
+git init
 
 # clone远程仓库，它会在当前目录下创建一个项目文件夹
 git clone <url>
@@ -265,32 +262,193 @@ git clone <url>
 
 
 
-加入到暂存区
+追踪文件：暂存已修改/新增/删除的文件
 
 ```bash
-git add <file name>		# 将新文件/已修改的文件添加到暂存区
+git add <file name>		# 将文件/目录添加到暂存区
 git add .				# 添加所有改动到暂存区
 ```
 
 
 
-删除
+取消追踪
 
 ```bash
-git rm <file name>			# 取消追踪并删除该文件，等待下次提交
-git rm --cached <file name>	# 从暂存区删除
-git rm \*~					# 删除所有以`~`结尾的文件
+git rm --cached <file name>	# 从暂存区移除，并不再追踪
+git rm <file name>			# 取消追踪并删除该文件，需要commit才会删除
+```
+
+注：取消stage、取消modify的命令可以在git status的提示中看到
+
+
+
+修改commit
+
+```bash
+# 将暂存区的文件合并到上次提交，且可以修改commit message
+git commit --amend
+# 会生成新的hash值
 ```
 
 
 
 移动、重命名
 
-```
+```bash
 git mv <file src> <file dst>
 ```
 
 
+
+标签
+
+```bash
+git tag			# 查看已有标签
+git tag v1.3	# 添加轻量标签
+git tag v1.2 <checksum>	# 给历史提交添加附注标签
+git tag -a v1.4	# 添加附注标签-a
+git show v1.4	# 查看标签信息
+
+git push origin v1.4	# 将标签推送到远程
+git push origin --tags	# 将所有标签推送到远程
+
+git tag -d v1.4	# 删除本地标签
+git push origin --delete v1.4	# 删除远程标签
+
+git checkout v1.4	# 移动到标签位置，注意可能是分离HEAD状态，请创建分支
+git checkout -b version1.4 v1.4
+```
+
+说明：相比轻量标签，附注标签还附带了创建者、创建时间、注释等信息。
+
+
+
+### 分支管理
+
+查看所有分支
+
+```bash
+git branch
+--merged		# 查看已合并到当前分支的分支
+--no-merged		# 查看尚未合并到当前分支的分支
+```
+
+
+
+创建分支
+
+```bash
+git checkout -b <newbranch> [<oldbranch>]
+git branch <newbranch> [<oldbranch>]
+```
+
+
+
+切换分支
+
+```bash
+git checkout <branch>
+```
+
+
+
+合并分支
+
+```bash
+git merge hotfix	# 将hotfix合并到当前分支
+```
+
+说明：
+
+1. 三方合并：基于两个分支及它们的最近公共祖先比较差异，并生成一个新结点。
+2. 快进合并：如果hotfix是当前分支的后继，则当前分支的指针可以直接向前推进（fast-forward）
+3. 如果两个分支合修改了同一个地方，则会冲突，打开文件解决冲突、删除冲突标记，然后add，commit。
+4. 可以使用 `--no-commit` 选项来进行合并而不自动提交。
+
+
+
+压缩合并
+
+```bash
+git merge --squash featA	# 将分支featA上的多次提交合为一次，合并过来
+git commit		# 需要手动commit
+```
+
+说明：
+
+1. squash合并后并不提交，因此你可以在提交之前利用squash来引入另一个分支的所有改动，并进行额外的修改。
+2. 这样的合并提交后，前驱指针只会指向单个父结点。
+
+
+
+合并分支2——变基
+
+```bash
+git checkout hotfix
+git rebase master	# 将当前分支的基(base)接到master之后
+# 等价于 git rebase master hotfix
+
+git checkout master
+git merge hotfix	# 由于hotfix在master之后，master可以直接快进合并
+```
+
+说明：
+
+1. 先找到两个分支的公共祖先C，然后将当前分支从C开始的修改（patch）依次一个个接续到master之后，使得当前分支的提交链由指向公共祖先变为指向master。
+
+2. 每次接续都可能有冲突，则需要解决冲突，add，然后继续` git rebase --continue`。
+
+3. 合并后，原本分叉的分支提交历史会变为线性的提交历史。
+
+4. 如果要对一个已经推送到远端的分支进行变基，则推送时添加 `-f` 参数：
+
+   ```bash
+   git push -f origin hotfix	# 将远程上的hotfix分支替换为新的hotfix
+   ```
+
+> 变基操作的实质是丢弃一些现有的提交，然后相应地新建一些内容一样但实际上不同的提交。
+>
+> 只对尚未推送或分享给别人的本地修改执行变基操作清理历史， 从不对已推送至别处的提交执行变基操作，这样，你才能享受到两种方式带来的便利。
+>
+> **如果提交存在于你的仓库之外，而别人可能基于这些提交进行开发，那么不要执行变基。**
+>
+> 如果你遵循这条金科玉律，就不会出差错。 否则，人民群众会仇恨你，你的朋友和家人也会嘲笑你，唾弃你。
+
+
+
+删除分支
+
+```bash
+git branch -d hotfix			# 删除本地分支
+git push origin --delete hotfix	# 删除远程分支
+```
+
+
+
+### 获取信息
+
+查看日志
+
+```bash
+git log --graph --oneline	# 图形化的分支历史、一行显示一次提交
+-p			# 显示每次提交的diff
+--stat		# 显示文件的增删统计
+--no-merges		# 隐藏merge的提交
+
+# 自定义输出格式：
+git log --pretty='%h: "%s" <%an> [%cr]'
+# 84b1c3c: "first commit" <innor> [42 minutes ago]
+
+# DIFF: 显示orgin/featA中有，featA中没有的提交
+featA..origin/featA
+# 即featA要追上origin/featA，需要合并哪些提交
+
+-S keywords		# 只显示修改了关键字的提交
+--author='innor'
+--since='2020-11-18'
+--before='2020-12-24'
+-- <filepath>	# 在命令的最后可以选定文件或目录
+```
 
 
 
@@ -298,6 +456,94 @@ git mv <file src> <file dst>
 
 ```bash
 git diff			# 比较工作区与暂存区
-git diff --stage	# 比较暂存区与commit区
+git diff --stage	# 比较暂存区与上次提交的
+git diff master...featA	# 显示featA相对于两者公共祖先提交的修改
+```
+
+
+
+查看状态
+
+```bash
+git status
+```
+
+
+
+帮助
+
+```bash
+git add -h		# 只查看verb的可选选项
+git <verb> --help
+git help <verb>
+```
+
+
+
+### 远程仓库
+
+查看远程仓库
+
+```bash
+git remote -v
+# output: origin	https://github.com/schacon/ticgit (fetch)
+```
+
+
+
+添加远程仓库
+
+```bash
+git remote add <remote-name> <url>	# 远程名是自定义的
+```
+
+
+
+拉取数据
+
+```bash
+git fetch	# 只是拉取远程的数据
+git pull	# 拉取数据后，自动合并当前分支
+```
+
+
+
+推送数据
+
+```bash
+git push <remote> <branch>	# 将分支提交到远程
+```
+
+fetch-merge-push：如果别人已经先于你推送了该分支，你必须先拉取他们的工作合并后才能推送：
+
+```bash
+# 两人都基于origin/master开发
+# 若Alice提交了修改，并push到了origin/master
+# 则当Bob基于原来的master修改，并push时，由于本地的master落后了，会被拒绝
+# Bob必须先抓取master的上游改动，合并到本地仓库中后，才能被允许推送。
+# 三步走:
+→ git fetch
+↓ git merge origin/master
+← git push origin master
+```
+
+个人理解：当你要push一个分支到远程时，你必须保证本地分支在远程分支的上游，即远程分支是本地分支的祖先结点，使得远程分支可以通过fast-forward来到达本地分支。
+
+
+
+推送到另一个远程分支
+
+```bash
+git push origin featB:featBee	#将本地的featB推送到origin/featBee
+```
+
+说明：使用了引用规范
+
+
+
+删除远程分支
+
+```
+git push origin --delete hotfix
 ```
 
