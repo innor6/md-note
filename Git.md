@@ -248,7 +248,7 @@ doc/**/*.pdf
 
 
 
-### 开始
+### 基础
 
 创建仓库
 
@@ -262,16 +262,17 @@ git clone <url>
 
 
 
-追踪文件：暂存已修改/新增/删除的文件
+暂存修改：追踪已修改/新增/删除的文件
 
 ```bash
 git add <file name>		# 将文件/目录添加到暂存区
 git add .				# 添加所有改动到暂存区
+git add -p				# 暂存部分修改（输入?查看交互操作的意思）
 ```
 
 
 
-取消追踪
+取消暂存
 
 ```bash
 git rm --cached <file name>	# 从暂存区移除，并不再追踪
@@ -323,7 +324,7 @@ git checkout -b version1.4 v1.4
 
 
 
-### 分支管理
+### 分支
 
 查看所有分支
 
@@ -433,7 +434,7 @@ git push origin --delete hotfix	# 删除远程分支
 git log --graph --oneline	# 图形化的分支历史、一行显示一次提交
 -p			# 显示每次提交的diff
 --stat		# 显示文件的增删统计
---no-merges		# 隐藏merge的提交
+--no-merges	# 隐藏merge的提交
 
 # 自定义输出格式：
 git log --pretty='%h: "%s" <%an> [%cr]'
@@ -480,7 +481,7 @@ git help <verb>
 
 
 
-### 远程仓库
+### 远程
 
 查看远程仓库
 
@@ -537,7 +538,7 @@ fetch-merge-push：如果别人已经先于你推送了该分支，你必须先�
 git push origin featB:featBee	#将本地的featB推送到origin/featBee
 ```
 
-说明：使用了引用规范
+- 使用了引用规范
 
 
 
@@ -545,5 +546,95 @@ git push origin featB:featBee	#将本地的featB推送到origin/featBee
 
 ```
 git push origin --delete hotfix
+```
+
+
+
+
+
+### 引用分支
+
+祖先引用
+
+```bash
+HEAD^^
+d921970^2	# 第二父提交，即merge过来的分支
+HEAD~3
+HEAD~~~
+HEAD~3^2	# HEAD~3的第二父提交
+```
+
+
+
+提交区间
+
+```bash
+# 两点：显示在featA分支中，而不在master分支中的提交
+git log master..featA		# 也表示master需要合并哪些提交才能追上featA
+git log origin/master..master	# 可以用来查看push会推送的提交
+
+# 多点：显示在分支refA和refB中，但不在分支refC和refD中的提交
+git log refA refB ^refC --not refD
+
+# 三点：显示只属于某一侧分支的提交，但不显示同时被两侧包含的分支
+git log master...featA --left-right	# 该选项可以显示提交属于哪一边
+```
+
+
+
+引用的历史记录：查看之前HEAD指向的引用
+
+```bash
+git reflog
+# 734713b HEAD@{0}: commit: fixed refs handling,
+# d921970 HEAD@{1}: merge phedders/rdocs
+# 1c002dd HEAD@{2}: commit: added some blame
+```
+
+- 可以用类似 `HEAD@{1}` 的方式进行引用
+
+
+
+```
+可以在命令行中使用 git add -p 或 git add --patch 来启动同样的脚本。
+
+更进一步地，可以使用 git reset --patch 命令的补丁模式来部分重置文件， 通过 git checkout --patch 命令来部分检出文件与 git stash save --patch 命令来部分暂存文件。 我们将会在接触这些命令的高级使用方法时了解更多详细信息。
+```
+
+
+
+### 贮藏 & 清理
+
+贮藏
+
+```bash
+git stash		# 把当前工作目录的修改贮藏到栈上
+git stash pop	# 弹出栈顶的贮藏，并应用到当前分支
+git stash apply # 应用栈顶的贮藏（不弹出）
+git stash drop  # 删除栈顶的贮藏
+--index			# 应用贮藏时，不会应用到当前分支中已经stage的文件
+
+git stash list	# 显示贮藏栈
+git stash pop/apply/drop stash@{1}	# 可以应用/删除指定的贮藏
+
+git stash -u	# 未追踪的文件也会被贮藏（但不会贮藏被忽略的文件，除非加上-a/--all）
+
+git stash branch <new branchname> # 从贮藏时的结点处创建一个新分支，弹出并应用贮藏
+```
+
+- 贮藏可以被应用到不同分支。
+- 应用贮藏时，可能会产生合并冲突。
+
+
+
+清理
+
+```bash
+git clean		# 删除未被追踪文件（不删除被忽略的文件）
+git clean -n	# 不真正执行删除，用于查看将会删除哪些文件（执行时-n改为-f）
+-d		# 还会删除空的子目录
+-x		# 还会删除被忽略的文件
+
+git stash --all	# 更安全的"删除"方法
 ```
 
