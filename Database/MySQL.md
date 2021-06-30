@@ -22,8 +22,6 @@ show databases;
 create database DB_NAME;
 ```
 
-
-
 选择数据库
 
 ```mysql
@@ -67,10 +65,6 @@ INSERT INTO test (name,avatar,regsiter_time,openid) value ('a','b','1997-08-24',
 
 
 
-
-
-
-
 退出
 
 ```mysql
@@ -105,38 +99,23 @@ GRANT ALL ON menagerie.* TO 'your_mysql_name'@'your_client_host';
 
 
 
+## 安装
 
-
-
-
-## 从文件中导入数据
-
-对于表
-
-```sql
-CREATE TABLE pet (
-    name VARCHAR(20), 
-    owner VARCHAR(20), 
-    species VARCHAR(20), 
-    sex CHAR(1), 
-    birth DATE, 
-    death DATE
-);
-```
-
-一个`pet.txt`文件中一行包含一条记录（用tab分隔，空值用`\N`表示）：
+安装
 
 ```
-Whistler	Gwen	bird	\N	1997-12-09	\N
+sudo apt-get update
+sudo apt-get install mysql-server
 ```
 
-mysql中导入数据：
+初始化设置
 
-```mysql
-LOAD DATA LOCAL INFILE '/path/pet.txt' INTO TABLE pet;
+```
+# 第二步会让你设置密码，最后一步reload选y，其他都可以选n
+sudo mysql_secure_installation
 ```
 
-注：windows文件需要在语句末尾加上`LINES TERMINATED BY '\r\n';`
+
 
 
 
@@ -166,7 +145,7 @@ sudo service mysql stop
 
 
 
-## 开启远程连接
+## 开启远程连接权限
 
 登录
 
@@ -177,8 +156,12 @@ mysql -u root -p
 选择数据库
 
 ```mysql
+#切换数据库
 use mysql;
-select host from user where user='root';
+#查询用户表命令：
+select User,authentication_string,Host from user;
+#查看状态
+select host,user,plugin from user;
 ```
 
 user表中的host属性指定了允许用户登录所使用的IP，修改：
@@ -186,8 +169,14 @@ user表中的host属性指定了允许用户登录所使用的IP，修改：
 ```mysql
 update user set host = '192.168.40.%' where user ='root';
 
-/* 另一种方法，*.*表示对所有库的所有表，这样做会在该表中添加另一条记录 */
-grant all privileges on *.* to root@115.208.110.211 identified by '密码';
+# 下面这个方法在腾讯云上可以：
+# *.*表示对所有库的所有表，这样做会在该表中添加另一条记录
+# 生成之后可以把host部分像上面一样改为带%的
+grant all privileges on *.* to root@124.78.252.30 identified by '密码';
+
+# 另一种方法
+alter user 'root'@'localhost' identified with mysql_native_password by '6458';
+
 ```
 
 为使修改生效，执行：
@@ -246,4 +235,40 @@ netstat -antp | grep LISTEN
    可以看到此时mysqld已经监听了所有ip。
 
 
+
+## mysqldump：导入导出数据
+
+导出数据库文件
+
+```
+mysqldump -u root -p 数据库名 <表名> > 数据库名.sql
+```
+
+导入数据库
+
+```
+mysql -u root -p 数据库名 < 数据库名.sql
+```
+
+
+
+导出可读的数据（逗号分隔，自动换行）
+
+```mysql
+SELECT语句
+OUTFILE '/tmp/result.txt'
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+FROM test_table;
+```
+
+导入可读的数据：
+
+```mysql
+LOAD DATA LOCAL 
+INFILE '/tmp/result.txt'
+INTO TABLE test_table;
+```
+
+注：windows文件需要在语句末尾加上`LINES TERMINATED BY '\r\n';`
 

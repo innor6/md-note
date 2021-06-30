@@ -4,13 +4,7 @@ gofmt或go fmt命令
 
 
 
-### 命名
 
-变量、函数：首字母大写表示包外可见，驼峰命名。
-
-包名：小写的单个单词
-
-接口名：只含一个方法的接口应该叫-er，如只含read方法叫Reader，因此可以Reader.read
 
 
 
@@ -36,69 +30,6 @@ if ... {
 ```
 
 
-
-
-
-##### for
-
-for循环
-
-```
-for i := 0; i < 10; i++ { }
-```
-
-while循环
-
-```
-for condition { }
-```
-
-无限循环
-
-```
-for { }
-```
-
-for range（返回 `index` 和 `value` ，用于array、slice、map）
-
-```go
-for key, value := range oldMap {
-	newMap[key] = value
-}
-```
-
-只要key / value
-
-```
-for key := range m
-for _, value := range array
-```
-
-字符串
-
-```
-for pos, char := range "日本\x80語"
-```
-
-可变参数列表
-
-```go
-func Max(a ...int) int {
-	max := 0
-	for _, i := range a {	//a是实参列表的切片
-		if i > max{
-			max= i
-		}
-	}
-	return max
-}
-```
-
-多个变量时只能平行赋值（因为go中逗号不能分隔语句，i++也是语句）
-
-```go
-for i, j := 0, len(a)-1; i < j; i, j = i+1, j-1 {
-```
 
 
 
@@ -344,29 +275,7 @@ str := fmt.Sprint("Hello ", 23)	// 生成字符串
 
 
 
-##### 函数
-
-```go
-// 返回多个参数
-func Apple() (ok bool, msg string) {
-	ok = false
-    msg = "错误信息"
-    return
-}
-```
-
-
-
-
-
-##### 方法
-
-语义：带接收器的函数（类似C++中类的方法）
-
-接收器可以为：
-
-- 值：只能调用值方法
-- 指针：可以调用指针方法和值方法
+- 
 
 
 

@@ -43,11 +43,41 @@ HTML
 
 
 
+表单
+
+- 常用属性：
+  - id：全局唯一id，用于选择对象
+  - name：提交时的key，也用于在表单内选择对象，也是单选按钮的组名
+  - value：提交时的value，控件的显示内容
+- HTML5属性：
+  - `novalidate`：提交时不校验，只用于form标签
+  - `autocomplete="on"`：自动完成，input域会显示以前的输入（也可用于form标签）
+  - 以下属性针对input
+    - `placeholder="First name"`：input为空时显示的提示信息
+    - `autofocus`：自动聚焦
+    - `required`：提交时必须非空
+    - `pattern="[A-Za-z]{3}"`：提交时匹配正则表达式
+    - `form="form1 form2"`：在form外指定input所属的表单
+  - 以下属性用于提交控件：type="submit" 和 type="image"
+    - ` formaction="demo-admin.php"`：覆盖form的action，提交到另一个url
+    - `formtarget="_blank"`：提交到一个新的页面上
+    - `formenctype="multipart/form-data"`：编码（好像只支持三种）
+    - `formmethod="post"`：提交方法
+    - `formnovalidate `：不校验
+
+
+
+拖放、地理定位（Geolocation）
+
+
+
 URL
 
 - 只能使用 ASCII 字符集
 - 使用 "%" 其后跟随两位的十六进制数来替换非 ASCII 字符
 - 不能包含空格。URL 编码通常使用 + 来替换空格。
+
+
 
 
 
